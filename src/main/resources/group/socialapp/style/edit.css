@@ -1,0 +1,54 @@
+/* Stylesheet for the EditUserView FXML */
+
+/* AnchorPane styles */
+.anchor-pane {
+    -fx-background-color: #f4f4f4;
+}
+
+/* GridPane styles */
+.grid-pane {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+/* Label styles */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* TextField styles */
+.text-field {
+    -fx-pref-height: 30;
+    -fx-pref-width: 200;
+    -fx-font-size: 14px;
+}
+
+/* ButtonBar styles */
+.button-bar {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Button styles */
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-color: #3498db;
+    -fx-text-fill: #ffffff;
+}
+
+.button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* ButtonBar padding */
+.button-bar > .container {
+    -fx-padding: 10;
+}
+
+/* Apply a default font for the entire application (change as needed) */
+* {
+    -fx-font-family: 'Arial', sans-serif;
+}

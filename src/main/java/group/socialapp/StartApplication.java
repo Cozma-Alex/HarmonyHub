@@ -31,16 +31,16 @@ public class StartApplication extends Application {
         ServiceFriendship serviceFriendship = new ServiceFriendship(friendshipDBRepository, userDBRepository, friendshipValidator);
 
         FXMLLoader userLoader = new FXMLLoader();
-        userLoader.setLocation(getClass().getResource("views/user-view.fxml"));
+        userLoader.setLocation(getClass().getResource("views/startup-view.fxml"));
         AnchorPane userLayout = userLoader.load();
         Scene scene = new Scene(userLayout);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/main.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/start.css")).toExternalForm());
         primaryStage.setScene(scene);
 
-        UserController userController = userLoader.getController();
-        userController.setService(serviceUser,serviceFriendship);
+        StartController startController = userLoader.getController();
+        startController.setData(serviceUser, serviceFriendship, primaryStage);
 
-        primaryStage.setWidth(800);
+        primaryStage.setWidth(860);
         primaryStage.show();
     }
 

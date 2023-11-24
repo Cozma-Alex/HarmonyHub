@@ -28,7 +28,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      *
      * @return all entities
      */
-    Iterable<E> getAll();
+    Iterable<E> findAll();
 
     /**
      * @param entity
@@ -66,4 +66,6 @@ public interface Repository<ID, E extends Entity<ID>> {
     Optional<E> update(E entity);
 
     int getNrOfEntities();
+
+    Iterable<E> filterByEmail(ID searchText);
 }

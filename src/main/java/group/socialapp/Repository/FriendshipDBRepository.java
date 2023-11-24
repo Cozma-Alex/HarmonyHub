@@ -52,7 +52,7 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
     }
 
     @Override
-    public Iterable<Friendship> getAll() {
+    public Iterable<Friendship> findAll() {
         List<Friendship> friendshipSet = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
@@ -141,5 +141,10 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
 
         return 0;
 
+    }
+
+    @Override
+    public Iterable<Friendship> filterByEmail(Pair<String, String> searchText) {
+        return null;
     }
 }

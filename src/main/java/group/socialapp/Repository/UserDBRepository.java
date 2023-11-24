@@ -45,7 +45,7 @@ public class UserDBRepository implements Repository<String, User> {
     }
 
     @Override
-    public Iterable<User> getAll() {
+    public Iterable<User> findAll() {
         List<User> userList = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
@@ -173,7 +173,6 @@ public class UserDBRepository implements Repository<String, User> {
                         String pass2 = resultSet.getString("password");
                         User user = new User(firstName, lastName, email, pass2);
                         user.setId(id);
-
                         userList.add(user);
                     }
                 }

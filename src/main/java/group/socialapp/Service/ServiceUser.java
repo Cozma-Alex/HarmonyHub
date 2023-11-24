@@ -5,8 +5,8 @@ import group.socialapp.GUI.Events.ChangeEventType;
 import group.socialapp.GUI.Events.UserChangeEvent;
 import group.socialapp.GUI.Observer.Observable;
 import group.socialapp.GUI.Observer.Observer;
+import group.socialapp.Repository.Repository;
 import group.socialapp.Repository.RepositoryException;
-import group.socialapp.Repository.UserDBRepository;
 import group.socialapp.Validators.Validator;
 
 import java.util.ArrayList;
@@ -19,11 +19,11 @@ public class ServiceUser implements Observable<UserChangeEvent> {
 
     private final Validator<User> validator;
 
-    private final UserDBRepository repository;
+    private final Repository<String, User> repository;
 
     private final List<Observer<UserChangeEvent>> observers = new ArrayList<>();
 
-    public ServiceUser(UserDBRepository userRepo, Validator<User> userValidator) {
+    public ServiceUser(Repository<String, User> userRepo, Validator<User> userValidator) {
         this.validator = userValidator;
         this.repository = userRepo;
     }
@@ -40,7 +40,7 @@ public class ServiceUser implements Observable<UserChangeEvent> {
     }
 
     public Iterable<User> getAll(){
-        return repository.getAll();
+        return repository.findAll();
     }
 
     public User addOneUser(String firstName, String lastName, String email, String password){

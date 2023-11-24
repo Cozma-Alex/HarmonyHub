@@ -14,6 +14,5 @@ public class UserValidator implements Validator<User>{
         if(user.getLastName().isEmpty()){
             throw new ValidationException("Last name cannot be empty");
         }
-
     }
 }

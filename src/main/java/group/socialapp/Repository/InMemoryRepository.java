@@ -17,6 +17,11 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
         return entities.size();
     }
 
+    @Override
+    public Iterable<E> filterByEmail(ID searchText) {
+        return null;
+    }
+
     public InMemoryRepository() {
         this.entities = new HashMap<>();
     }
@@ -31,7 +36,7 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
     }
 
     @Override
-    public Iterable<E> getAll() {
+    public Iterable<E> findAll() {
         return entities.values();
     }
 

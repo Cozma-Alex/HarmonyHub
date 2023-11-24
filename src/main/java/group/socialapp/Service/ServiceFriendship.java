@@ -47,7 +47,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
     }
 
     public Iterable<Friendship> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
     public void addOneFriendship(String id_friend1, String id_friend2) {
@@ -115,7 +115,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
     }
 
     private void createAdjList(Map<String, Set<String>> adjList) {
-        Iterable<Friendship> friendships = repository.getAll();
+        Iterable<Friendship> friendships = repository.findAll();
 
         friendships.forEach(friendship -> {
             adjList.computeIfAbsent(friendship.getId().getLeft(), k -> new HashSet<>()).add(friendship.getId().getRight());
@@ -173,7 +173,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
 
     public Optional<User> deleteUser(String id) {
 
-        Iterable<Friendship> friendships = repository.getAll();
+        Iterable<Friendship> friendships = repository.findAll();
 
         User user2 = user_repository.findOne(id).get();
 
@@ -193,7 +193,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
     }
 
     public List<String> friendsFromMonth(String id, int month) {
-        Iterable<Friendship> friendships = repository.getAll();
+        Iterable<Friendship> friendships = repository.findAll();
 
         return StreamSupport.stream(friendships.spliterator(),false)
                 .filter(friendship -> isFrienshipfromMonth(friendship, id, month))

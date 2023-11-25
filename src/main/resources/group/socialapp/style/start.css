@@ -14,7 +14,7 @@
 
 /* Style the Get Started button */
 .button-get-started {
-    -fx-font-size: 18px;
+    -fx-font-size: 16px;
     -fx-background-color: #27ae60;
     -fx-text-fill: white;
     -fx-cursor: hand; /* Optional: Change cursor on hover */
@@ -29,11 +29,5 @@
 /* Style the hyperlink */
 .hyperlink-login {
     -fx-text-fill: #ecf0f1;
-    -fx-font-size: 14px;
-}
-
-/* Style the tech logo */
-.image-tech-logo {
-    -fx-fit-height: 200;
-    -fx-fit-width: 200;
+    -fx-font-size: 16px;
 }

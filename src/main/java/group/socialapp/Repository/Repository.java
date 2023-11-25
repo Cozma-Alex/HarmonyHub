@@ -1,6 +1,7 @@
 package group.socialapp.Repository;
 
 import group.socialapp.Domain.Entity;
+import group.socialapp.Domain.User;
 import group.socialapp.Validators.ValidationException;
 
 import java.util.Optional;
@@ -68,4 +69,6 @@ public interface Repository<ID, E extends Entity<ID>> {
     int getNrOfEntities();
 
     Iterable<E> filterByEmail(ID searchText);
+
+    Optional<User> getByEmail(ID email);
 }

@@ -12,8 +12,6 @@ module group.socialapp {
 
     opens group.socialapp.Domain to javafx.base;
     exports group.socialapp.GUI;
-    exports group.socialapp.GUI.Controller;
-    opens group.socialapp.GUI.Controller to javafx.fxml;
     exports group.socialapp.GUI.Events;
     opens group.socialapp.GUI.Events to javafx.fxml;
 }

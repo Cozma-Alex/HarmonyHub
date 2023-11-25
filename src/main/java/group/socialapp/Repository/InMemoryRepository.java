@@ -1,6 +1,7 @@
 package group.socialapp.Repository;
 
 import group.socialapp.Domain.Entity;
+import group.socialapp.Domain.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,11 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
 
     @Override
     public Iterable<E> filterByEmail(ID searchText) {
+        return null;
+    }
+
+    @Override
+    public Optional<User> getByEmail(ID email) {
         return null;
     }
 

@@ -238,4 +238,8 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
     public void notify(UserChangeEvent event) {
         observers.forEach(observer -> observer.update(event));
     }
+
+    public ArrayList<User> getAllFriendsByEmail(String email) {
+        return repository.getAllFriendsByEmail(user_repository.getByEmail(email).get().getId());
+    }
 }

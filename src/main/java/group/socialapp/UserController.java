@@ -2,7 +2,6 @@ package group.socialapp;
 
 
 import group.socialapp.Domain.User;
-import group.socialapp.GUI.Controller.EditUserController;
 import group.socialapp.GUI.Events.UserChangeEvent;
 import group.socialapp.GUI.Observer.Observer;
 import group.socialapp.GUI.UserAlert;
@@ -32,10 +31,11 @@ import java.util.stream.StreamSupport;
 
 public class UserController implements Observer<UserChangeEvent> {
 
-    public TextField searchField;
+    @FXML
+    private TextField searchField;
     private ServiceUser serviceUser;
 
-    ServiceFriendship serviceFriendship;
+    private ServiceFriendship serviceFriendship;
 
     private final ObservableList<User> model = FXCollections.observableArrayList();
 

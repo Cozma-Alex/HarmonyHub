@@ -3,6 +3,7 @@ package group.socialapp.Repository;
 
 import group.socialapp.Domain.Friendship;
 import group.socialapp.Domain.Pair;
+import group.socialapp.Domain.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -26,13 +27,11 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
     @Override
     public Optional<Friendship> findOne(Pair<String, String> id) {
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from friendship where id_friend1 = ? and id_friend2 = ?");
-             ResultSet resultSet = statement.executeQuery()){
+             PreparedStatement statement = connection.prepareStatement("select * from friendship where id_friend1 = ? and id_friend2 = ?")){
 
             statement.setString(1, id.getLeft());
             statement.setString(2, id.getRight());
-            statement.setString(3, id.getRight());
-            statement.setString(4, id.getLeft());
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 Friendship friendship = new Friendship();
                 String id_friend1 = resultSet.getString("id_friend1");
@@ -146,5 +145,37 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
     @Override
     public Iterable<Friendship> filterByEmail(Pair<String, String> searchText) {
         return null;
+    }
+
+    @Override
+    public Optional<User> getByEmail(Pair<String, String> email) {
+        return Optional.empty();
+    }
+
+    public ArrayList<User> getAllFriendsByEmail(String id_user) {
+        ArrayList<User> users = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("select * from friendship where id_friend1 = ? or id_friend2 = ?");
+             ) {
+
+            statement.setString(1, id_user);
+            statement.setString(2, id_user);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                String id_friend1 = resultSet.getString("id_friend1");
+                String id_friend2 = resultSet.getString("id_friend2");
+                LocalDateTime dateTime = resultSet.getTimestamp("friendssince").toLocalDateTime();
+                Friendship friendship = new Friendship();
+                friendship.setDate(dateTime);
+                friendship.setId(new Pair<>(id_friend1, id_friend2));
+
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection failed");
+        }
     }
 }

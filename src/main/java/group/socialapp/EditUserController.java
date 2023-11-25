@@ -1,4 +1,4 @@
-package group.socialapp.GUI.Controller;
+package group.socialapp;
 
 import group.socialapp.Domain.User;
 import group.socialapp.GUI.UserAlert;

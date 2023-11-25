@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="520.0" prefWidth="667.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.socialapp.UserController">
+<AnchorPane prefHeight="600.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.socialapp.MainPageController">
     <children>
         <SplitPane dividerPositions="0.5752895752895753" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -31,15 +31,14 @@
                         </SplitPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="193.0" prefWidth="665.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="291.0" prefWidth="665.0">
                     <children>
                         <HBox layoutX="5.0" layoutY="206.0" prefHeight="34.0" prefWidth="85.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#handleAddMessage" prefHeight="26.0" prefWidth="71.0" text="Add" />
-                                <Button mnemonicParsing="false" onAction="#handleDeleteMessage" prefHeight="26.0" prefWidth="83.0" text="Delete" />
-                                <Button mnemonicParsing="false" onAction="#handleUpdateMessage" prefHeight="26.0" prefWidth="85.0" text="Update" />
-                                <Label prefHeight="31.0" prefWidth="45.0" text="Search:" />
-                                <TextField fx:id="searchField" onKeyReleased="#handleSearch" prefHeight="26.0" prefWidth="275.0"/>
+                                <Button mnemonicParsing="false" onAction="#handleSeeFriendRequests" prefHeight="26.0" prefWidth="211.0" text="See Friend Requests" />
+                                <Button mnemonicParsing="false" onAction="#handleAddFriend" prefHeight="26.0" prefWidth="216.0" text="Send Friend Request" />
+                                <Button mnemonicParsing="false" onAction="#handleDeleteAccount" prefHeight="26.0" prefWidth="174.0" text="Delete Account" />
+                                <Button mnemonicParsing="false" onAction="#handleUpdateAccount" prefHeight="26.0" prefWidth="181.0" text="Update Account" />
                             </children>
                             <padding>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

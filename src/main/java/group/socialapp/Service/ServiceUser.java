@@ -95,4 +95,8 @@ public class ServiceUser implements Observable<UserChangeEvent> {
     public Iterable<User> filterByEmail(String searchText) {
         return repository.filterByEmail(searchText);
     }
+
+    public Optional<User> getByEmail(String email){
+        return repository.getByEmail(email);
+    }
 }

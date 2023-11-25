@@ -33,7 +33,10 @@ public class UserDBRepository implements Repository<String, User> {
                 String lastName = resultSet.getString("last_name");
                 String email = resultSet.getString("email");
                 String pass2 = resultSet.getString("password");
-                User user = new User(firstName, lastName, email, pass2);
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
                 user.setId(id);
                 return Optional.of(user);
             }
@@ -58,7 +61,10 @@ public class UserDBRepository implements Repository<String, User> {
                 String lastName = resultSet.getString("last_name");
                 String email = resultSet.getString("email");
                 String pass2 = resultSet.getString("password");
-                User user = new User(firstName, lastName, email, pass2);
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
                 user.setId(id);
 
                 userList.add(user);
@@ -77,7 +83,7 @@ public class UserDBRepository implements Repository<String, User> {
             throw new IllegalArgumentException("User must not be null");
         }
 
-        String insertSQL = "insert into users(id,first_name, last_name, email, password) values(?,?,?,?,?)";
+        String insertSQL = "insert into users(id, first_name, last_name, email, password, salt) values(?,?,?,?,?,?)";
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = connection.prepareStatement(insertSQL);
@@ -86,6 +92,7 @@ public class UserDBRepository implements Repository<String, User> {
             statement.setString(3, entity.getLastName());
             statement.setString(4, entity.getEmail());
             statement.setString(5, entity.getPassword());
+            statement.setString(6, entity.getSalt());
             int response = statement.executeUpdate();
             return response == 0 ? Optional.empty() : Optional.of(entity);
         } catch (SQLException e) {
@@ -171,7 +178,10 @@ public class UserDBRepository implements Repository<String, User> {
                         String lastName = resultSet.getString("last_name");
                         String email = resultSet.getString("email");
                         String pass2 = resultSet.getString("password");
-                        User user = new User(firstName, lastName, email, pass2);
+                        String salt = resultSet.getString("salt");
+                        User user = new User(firstName, lastName, email);
+                        user.setPassword(pass2);
+                        user.setSalt(salt);
                         user.setId(id);
                         userList.add(user);
                     }
@@ -182,5 +192,33 @@ public class UserDBRepository implements Repository<String, User> {
         }
 
         return userList;
+    }
+
+    @Override
+    public Optional<User> getByEmail(String emailToSearch) {
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("select * from users where email = ?")
+        ) {
+            statement.setString(1, emailToSearch);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String pass2 = resultSet.getString("password");
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
+                user.setPassword(pass2);
+                user.setId(id);
+                return Optional.of(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.empty();
     }
 }

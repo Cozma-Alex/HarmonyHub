@@ -13,15 +13,33 @@ public class User extends Entity<String>{
 
     private String password;
 
+    private String salt;
+
+
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.salt = BCrypt.gensalt();
+        this.password = BCrypt.hashpw(password, salt);
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public boolean check_password(String password){
-        return BCrypt.checkpw(password, this.password);
+        return BCrypt.hashpw(password, salt).equals(this.password);
     }
 
     public String getPassword() {
@@ -29,9 +47,8 @@ public class User extends Entity<String>{
     }
 
     public void setPassword(String password) {
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = password;
     }
-
     public String getEmail() {
         return email;
     }

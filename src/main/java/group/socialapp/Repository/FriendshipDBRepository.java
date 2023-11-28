@@ -256,12 +256,23 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
         ArrayList<User> users = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select u.* from users u where not exists" +
-                     "(select 1 from friendship f where (f.id_friend1 = u.id or f.id_friend2 = u.id)) and not exists" +
-                     "(select 1 from friendshiprequest fr join users u2 on u2.id = fr.id_user1 where fr.id_user2 = u.id) " +
-                     "and u.id != ?");
+             PreparedStatement statement = connection.prepareStatement("SELECT u.*\n" +
+                     "FROM users u\n" +
+                     "WHERE NOT EXISTS (\n" +
+                     "    SELECT 1\n" +
+                     "    FROM friendship f\n" +
+                     "    WHERE (u.id = f.id_friend1 OR u.id = f.id_friend2)\n" +
+                     "       AND (? IN (f.id_friend1, f.id_friend2))\n" +
+                     ")\n" +
+                     "AND NOT EXISTS (\n" +
+                     "    SELECT 1\n" +
+                     "    FROM friendshiprequest fr\n" +
+                     "    WHERE (u.id = fr.id_user1 OR u.id = fr.id_user2)\n" +
+                     "       AND (? IN (fr.id_user1, fr.id_user2))\n" +
+                     ");");
         ) {
             statement.setString(1, user.getId());
+            statement.setString(2, user.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 String id = resultSet.getString("id");
@@ -291,10 +302,14 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
         ArrayList<User> users = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from users u join friendship on (id_friend1 = u.id or id_friend2 = u.id) where u.id != ?");
+             PreparedStatement statement = connection.prepareStatement("SELECT u.*\n" +
+                     "FROM users u\n" +
+                     "JOIN friendship f ON u.id = f.id_friend1 OR u.id = f.id_friend2\n" +
+                     "WHERE ? IN (f.id_friend1, f.id_friend2) and u.id != ?");
         ) {
 
             statement.setString(1, id);
+            statement.setString(2, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 String id_user = resultSet.getString("id");

@@ -271,7 +271,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
         FriendshipRequest friendshipRequest = requestRepository.findOne(new Pair<>(user1.getId(), user2.getId())).get();
         friendshipRequest.setStatus("rejected");
         requestRepository.update(friendshipRequest);
-        notify(new UserChangeEvent(ChangeEventType.ACCEPT, userRepository.findOne(friendshipRequest.getId().getRight()).get()));
+        notify(new UserChangeEvent(ChangeEventType.DENY, userRepository.findOne(friendshipRequest.getId().getRight()).get()));
     }
 
     public Iterable<User> getALlRequests(User user) {

@@ -180,7 +180,7 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
         ArrayList<User> users = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from users u join friendship on (id_friend1 = u.id or id_friend2 = u.id) where u.id != ?");
+             PreparedStatement statement = connection.prepareStatement("select * from users u join friendship on (id_friend1 = u.id or id_friend2 = u.id) where u.id = ?");
              ) {
 
             statement.setString(1, id_user);
@@ -275,6 +275,38 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
                 user.setSalt(salt);
                 user.setPassword(pass2);
                 user.setId(id);
+
+                users.add(user);
+
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection failed");
+        }
+    }
+
+    public ArrayList<User> getAllFriendsByEmail2(String id) {
+        ArrayList<User> users = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("select * from users u join friendship on (id_friend1 = u.id or id_friend2 = u.id) where u.id != ?");
+        ) {
+
+            statement.setString(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                String id_user = resultSet.getString("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String pass2 = resultSet.getString("password");
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
+                user.setId(id_user);
 
                 users.add(user);
 

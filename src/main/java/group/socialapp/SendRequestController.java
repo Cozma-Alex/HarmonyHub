@@ -107,4 +107,17 @@ public class SendRequestController implements Observer<UserChangeEvent> {
         startStage.setScene(scene);
         startStage.setWidth(860);
     }
+
+    public void handleMainPage(ActionEvent actionEvent) throws IOException {
+        FXMLLoader userLoader = new FXMLLoader();
+        userLoader.setLocation(getClass().getResource("views/mainpage-view.fxml"));
+        AnchorPane userLayout = userLoader.load();
+        Scene scene = new Scene(userLayout);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/main.css")).toExternalForm());
+        MainPageController startController = userLoader.getController();
+        startController.setService(serviceUser, serviceFriendship, startStage, user);
+        startStage.setScene(scene);
+        startStage.setWidth(928);
+    }
+
 }

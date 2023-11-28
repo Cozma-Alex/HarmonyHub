@@ -75,6 +75,8 @@ public class LoginController {
         AnchorPane userLayout = userLoader.load();
         Scene scene = new Scene(userLayout);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/register.css")).toExternalForm());
+        RegisterController startController = userLoader.getController();
+        startController.setService(serviceUser, serviceFriendship, startStage);
         startStage.setScene(scene);
     }
 }

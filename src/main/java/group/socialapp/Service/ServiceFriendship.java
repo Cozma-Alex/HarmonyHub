@@ -196,7 +196,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
         {
             throw new RepositoryException("There is no entity with the id " + id);
         }
-        notify(new UserChangeEvent(ChangeEventType.DELETE, user.get()));
+//        notify(new UserChangeEvent(ChangeEventType.DELETE, user.get()));
         return user;
     }
 
@@ -323,5 +323,9 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
     public Iterable<User> filterbyRequest() {
         repository.setUser(this.user);
         return repository.filterByRequest();
+    }
+
+    public ArrayList<User> getAllFriendsByEmail2(String email) {
+        return repository.getAllFriendsByEmail2(userRepository.getByEmail(email).get().getId());
     }
 }

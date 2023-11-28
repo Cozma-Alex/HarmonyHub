@@ -20,20 +20,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class MainPageController implements Observer<UserChangeEvent> {
+public class SendRequestController implements Observer<UserChangeEvent> {
 
-    private ServiceUser serviceUser;
-
-    private ServiceFriendship serviceFriendship;
-
-    private User user;
-
+    @FXML
+    private TextField searchField;
     @FXML
     TableView<User> tableView;
 
@@ -43,22 +38,23 @@ public class MainPageController implements Observer<UserChangeEvent> {
     TableColumn<User, String> tableColumnLastName;
     @FXML
     TableColumn<User, String> tableColumnEmail;
-
-    @FXML
-    Stage mainStage;
-
-    @FXML
-    TextField searchField;
-
+    private ServiceUser serviceUser;
+    private ServiceFriendship serviceFriendship;
+    private Stage startStage;
+    private User user;
     private final ObservableList<User> model = FXCollections.observableArrayList();
 
-    public void setService(ServiceUser ServiceUser, ServiceFriendship ServiceFriendship, Stage startStage, User user) {
-        serviceUser = ServiceUser;
-        serviceFriendship = ServiceFriendship;
-        mainStage = startStage;
+
+    public void setService(ServiceUser serviceUser, ServiceFriendship serviceFriendship, Stage mainStage, User user) {
+        this.serviceUser = serviceUser;
+        this.serviceFriendship = serviceFriendship;
         this.user = user;
-        serviceUser.addObserver(this);
-        serviceFriendship.addObserver(this);
+        this.startStage = mainStage;
+        initModel();
+    }
+
+    @Override
+    public void update(UserChangeEvent event) {
         initModel();
     }
 
@@ -70,14 +66,11 @@ public class MainPageController implements Observer<UserChangeEvent> {
         tableView.setItems(model);
     }
 
-    @Override
-    public void update(UserChangeEvent event) {
-        initModel();
-    }
-
     private void initModel() {
-        ArrayList<User> users = serviceFriendship.getAllFriendsByEmail(user.getEmail());
-        List<User> UserList = new ArrayList<>(users);
+        serviceFriendship.setUser(user);
+        Iterable<User> users = serviceFriendship.filterbyRequest();
+        List<User> UserList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
         model.setAll(UserList);
     }
 
@@ -86,7 +79,7 @@ public class MainPageController implements Observer<UserChangeEvent> {
 
         if (!searchText.isEmpty()) {
             serviceFriendship.setUser(user);
-            Iterable<User> users = serviceFriendship.filterByEmail(searchText);
+            Iterable<User> users = serviceFriendship.filterByEmailAndRequest(searchText);
             List<User> UserList = StreamSupport.stream(users.spliterator(), false)
                     .collect(Collectors.toList());
             model.setAll(UserList);
@@ -96,35 +89,11 @@ public class MainPageController implements Observer<UserChangeEvent> {
 
     }
 
-    public void handleSeeFriendRequests(ActionEvent actionEvent) throws IOException {
-        FXMLLoader userLoader = new FXMLLoader();
-        userLoader.setLocation(getClass().getResource("views/requests-view.fxml"));
-        AnchorPane userLayout = userLoader.load();
-        Scene scene = new Scene(userLayout);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/main.css")).toExternalForm());
-        RequestController startController = userLoader.getController();
-        startController.setService(serviceUser, serviceFriendship, mainStage, user);
-        mainStage.setScene(scene);
-        mainStage.setWidth(745);
-    }
-
-    public void handleAddFriend(ActionEvent actionEvent) throws IOException {
-        FXMLLoader userLoader = new FXMLLoader();
-        userLoader.setLocation(getClass().getResource("views/send-request-view.fxml"));
-        AnchorPane userLayout = userLoader.load();
-        Scene scene = new Scene(userLayout);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/main.css")).toExternalForm());
-        SendRequestController startController = userLoader.getController();
-        startController.setService(serviceUser, serviceFriendship, mainStage, user);
-        mainStage.setScene(scene);
-    }
-
-    public void handleDeleteAccount(ActionEvent actionEvent) {
-
-    }
-
-    public void handleUpdateAccount(ActionEvent actionEvent) {
-
+    public void handleFriendRequest(ActionEvent actionEvent) {
+        User selected = tableView.getSelectionModel().getSelectedItem();
+        serviceFriendship.setUser(user);
+        serviceFriendship.addRequest(selected);
+        initModel();
     }
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
@@ -134,8 +103,8 @@ public class MainPageController implements Observer<UserChangeEvent> {
         Scene scene = new Scene(userLayout);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/login.css")).toExternalForm());
         LoginController startController = userLoader.getController();
-        startController.setData(serviceUser, serviceFriendship, mainStage);
-        mainStage.setScene(scene);
-        mainStage.setWidth(860);
+        startController.setData(serviceUser, serviceFriendship, startStage);
+        startStage.setScene(scene);
+        startStage.setWidth(860);
     }
 }

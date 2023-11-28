@@ -1,6 +1,7 @@
 package group.socialapp;
 
 import group.socialapp.Repository.FriendshipDBRepository;
+import group.socialapp.Repository.RequestDBRepository;
 import group.socialapp.Repository.UserDBRepository;
 import group.socialapp.Service.ServiceFriendship;
 import group.socialapp.Service.ServiceUser;
@@ -28,7 +29,8 @@ public class StartApplication extends Application {
 
         FriendshipValidator friendshipValidator = new FriendshipValidator();
         FriendshipDBRepository friendshipDBRepository = new FriendshipDBRepository(url ,username, password);
-        ServiceFriendship serviceFriendship = new ServiceFriendship(friendshipDBRepository, userDBRepository, friendshipValidator);
+        RequestDBRepository requestRepository = new RequestDBRepository(url ,username, password);
+        ServiceFriendship serviceFriendship = new ServiceFriendship(friendshipDBRepository, userDBRepository, requestRepository, friendshipValidator);
 
         FXMLLoader userLoader = new FXMLLoader();
         userLoader.setLocation(getClass().getResource("views/startup-view.fxml"));

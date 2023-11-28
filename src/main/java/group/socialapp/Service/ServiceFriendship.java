@@ -1,6 +1,7 @@
 package group.socialapp.Service;
 
 import group.socialapp.Domain.Friendship;
+import group.socialapp.Domain.FriendshipRequest;
 import group.socialapp.Domain.Pair;
 import group.socialapp.Domain.User;
 import group.socialapp.GUI.Events.ChangeEventType;
@@ -9,8 +10,12 @@ import group.socialapp.GUI.Observer.Observable;
 import group.socialapp.GUI.Observer.Observer;
 import group.socialapp.Repository.FriendshipDBRepository;
 import group.socialapp.Repository.RepositoryException;
+import group.socialapp.Repository.RequestDBRepository;
 import group.socialapp.Repository.UserDBRepository;
 import group.socialapp.Validators.Validator;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,15 +28,18 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
 
     private final FriendshipDBRepository repository;
 
-    private final UserDBRepository user_repository;
+    private final UserDBRepository userRepository;
+
+    private final RequestDBRepository requestRepository;
 
     private final Validator<Friendship> validator;
 
     private final List<Observer<UserChangeEvent>> observers = new ArrayList<>();
 
-    public ServiceFriendship(FriendshipDBRepository repository, UserDBRepository user_repository, Validator<Friendship> validator) {
+    public ServiceFriendship(FriendshipDBRepository repository, UserDBRepository user_repository, RequestDBRepository requestRepository, Validator<Friendship> validator) {
         this.repository = repository;
-        this.user_repository = user_repository;
+        this.userRepository = user_repository;
+        this.requestRepository = requestRepository;
         this.validator = validator;
     }
 
@@ -164,7 +172,7 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
         List<User> community = new ArrayList<>();
 
         for (String id : largestComponent) {
-            community.add(user_repository.findOne(id).get());
+            community.add(userRepository.findOne(id).get());
         }
 
         return community;
@@ -175,14 +183,14 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
 
         Iterable<Friendship> friendships = repository.findAll();
 
-        User user2 = user_repository.findOne(id).get();
+        User user2 = userRepository.findOne(id).get();
 
         friendships.forEach(friendship -> {
             if (Objects.equals(friendship.getId().getLeft(), user2.getId()) || Objects.equals(friendship.getId().getRight(), user2.getId()))
                 repository.delete(friendship.getId());
         });
 
-        Optional<User> user = user_repository.delete(id);
+        Optional<User> user = userRepository.delete(id);
 
         if(user.isEmpty())
         {
@@ -206,10 +214,10 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
 
         User user;
         if (Objects.equals(friendship.getId().getLeft(), id)){
-            user = user_repository.findOne(friendship.getId().getRight()).get();
+            user = userRepository.findOne(friendship.getId().getRight()).get();
         }
         else {
-            user = user_repository.findOne(friendship.getId().getLeft()).get();
+            user = userRepository.findOne(friendship.getId().getLeft()).get();
         }
         str = user.getLastName() + "|" + user.getFirstName() + "|" + friendship.getDate().format(DateTimeFormatter.ISO_DATE);
 
@@ -240,6 +248,80 @@ public class ServiceFriendship implements Observable<UserChangeEvent> {
     }
 
     public ArrayList<User> getAllFriendsByEmail(String email) {
-        return repository.getAllFriendsByEmail(user_repository.getByEmail(email).get().getId());
+        return repository.getAllFriendsByEmail(userRepository.getByEmail(email).get().getId());
+    }
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Iterable<User> filterByEmail(String searchText) {
+        repository.setUser(this.user);
+        return repository.filterByEmail(searchText);
+    }
+
+
+    public void denyRequest(User user1, User user2) {
+        FriendshipRequest friendshipRequest = requestRepository.findOne(new Pair<>(user1.getId(), user2.getId())).get();
+        friendshipRequest.setStatus("rejected");
+        requestRepository.update(friendshipRequest);
+        notify(new UserChangeEvent(ChangeEventType.ACCEPT, userRepository.findOne(friendshipRequest.getId().getRight()).get()));
+    }
+
+    public Iterable<User> getALlRequests(User user) {
+        Iterable<FriendshipRequest> friendshipRequests = requestRepository.findAllRequestOfUser(user);
+
+        List<User> users = new ArrayList<>();
+
+        friendshipRequests.forEach(friendshipRequest -> {
+            User user1 = userRepository.findOne(friendshipRequest.getId().getLeft()).get();
+            users.add(user1);
+        });
+
+        return users;
+    }
+
+    public void acceptRequest(User user1, User user2) {
+        FriendshipRequest friendshipRequest = requestRepository.findOne(new Pair<>(user2.getId(), user1.getId())).get();
+        friendshipRequest.setStatus("accepted");
+        requestRepository.update(friendshipRequest);
+        addOneFriendship(user1.getId(), user2.getId());
+        notify(new UserChangeEvent(ChangeEventType.ACCEPT, userRepository.findOne(friendshipRequest.getId().getRight()).get()));
+    }
+
+    public Iterable<User> filterByEmailAndRequest(String searchText) {
+        repository.setUser(this.user);
+        return repository.filterByEmailAndRequest(searchText);
+    }
+
+    public void addRequest(User selected) {
+
+        EventHandler<ActionEvent> acceptHandler = event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Friendship accepted");
+            alert.showAndWait();
+        };
+
+        EventHandler<ActionEvent> denyHandler = event -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Friendship denied");
+            alert.showAndWait();
+        };
+
+        FriendshipRequest friendshipRequest = new FriendshipRequest(LocalDateTime.now(), "pending", acceptHandler, denyHandler);
+        friendshipRequest.setId(new Pair<>(user.getId(), selected.getId()));
+        requestRepository.addOne(friendshipRequest);
+        notify(new UserChangeEvent(ChangeEventType.PENDING, selected));
+    }
+
+    public Iterable<User> filterbyRequest() {
+        repository.setUser(this.user);
+        return repository.filterByRequest();
     }
 }

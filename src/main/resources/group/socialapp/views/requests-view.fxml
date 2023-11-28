@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="520.0" prefWidth="667.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.socialapp.SendRequestController">
+<AnchorPane prefHeight="520.0" prefWidth="667.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group.socialapp.RequestController">
     <children>
         <SplitPane dividerPositions="0.5752895752895753" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -35,8 +35,9 @@
                     <children>
                         <HBox layoutX="5.0" layoutY="206.0" prefHeight="34.0" prefWidth="85.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#handleFriendRequest" prefHeight="26.0" prefWidth="71.0" text="Send Friend Request" />
-                                <TextField fx:id="searchField" onKeyReleased="#handleSearch" prefHeight="26.0" prefWidth="275.0" promptText="Search by Email" />
+                                <Button mnemonicParsing="false" onAction="#handleAcceptRequest" prefHeight="26.0" prefWidth="178.0" text="Accept Request" />
+                                <Button mnemonicParsing="false" onAction="#handleDenyRequest" prefHeight="26.0" prefWidth="178.0" text="Deny Request" />
+                                <Button layoutX="50.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="26.0" prefWidth="84.0" text="Logout" />
                             </children>
                             <padding>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

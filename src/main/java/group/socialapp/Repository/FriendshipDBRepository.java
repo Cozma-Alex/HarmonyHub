@@ -8,8 +8,8 @@ import group.socialapp.Domain.User;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 public class FriendshipDBRepository implements Repository<Pair<String, String>, Friendship> {
 
@@ -143,24 +143,16 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
     }
 
     @Override
-    public Iterable<Friendship> filterByEmail(Pair<String, String> searchText) {
-        return null;
-    }
-
-    @Override
-    public Optional<User> getByEmail(Pair<String, String> email) {
-        return Optional.empty();
-    }
-
-    public ArrayList<User> getAllFriendsByEmail(String id_user) {
+    public Iterable<User> filterByEmail(String searchText) {
         ArrayList<User> users = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from friendship where id_friend1 = ? or id_friend2 = ?");
-             ) {
+             PreparedStatement statement = connection.prepareStatement("select * from users u join friendship f on u.id = f.id_friend1 or u.id = f.id_friend2 where (f.id_friend1 = ? or f.id_friend2 = ?) and lower(u.email) like ?");
+        ) {
 
-            statement.setString(1, id_user);
-            statement.setString(2, id_user);
+            statement.setString(1, user.getId());
+            statement.setString(2, user.getId());
+            statement.setString(3, "%"+searchText+"%");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 String id_friend1 = resultSet.getString("id_friend1");
@@ -169,6 +161,122 @@ public class FriendshipDBRepository implements Repository<Pair<String, String>, 
                 Friendship friendship = new Friendship();
                 friendship.setDate(dateTime);
                 friendship.setId(new Pair<>(id_friend1, id_friend2));
+
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection failed");
+        }
+    }
+
+    @Override
+    public Optional<User> getByEmail(String email) {
+        return Optional.empty();
+    }
+
+    public ArrayList<User> getAllFriendsByEmail(String id_user) {
+        ArrayList<User> users = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("select * from users u join friendship on (id_friend1 = u.id or id_friend2 = u.id) where u.id != ?");
+             ) {
+
+            statement.setString(1, id_user);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                String id = resultSet.getString("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String pass2 = resultSet.getString("password");
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
+                user.setId(id);
+
+                users.add(user);
+
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection failed");
+        }
+    }
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Iterable<User> filterByEmailAndRequest(String searchText) {
+        ArrayList<User> users = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("select u.* from users u where not exists(select 1 from friendship f where (f.id_friend1 = u.id or f.id_friend2 = u.id)) and not exists(select 1 from friendshiprequest fr join users u2 on u2.id = fr.id_user1 where u2.email like ? and fr.id_user2 = u.id) and u.email like ? and u.id != ?");
+        ) {
+            statement.setString(1, "%"+searchText+"%");
+            statement.setString(2, "%"+searchText+"%");
+            statement.setString(3, user.getId());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                String id = resultSet.getString("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String pass2 = resultSet.getString("password");
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
+                user.setPassword(pass2);
+                user.setId(id);
+
+                users.add(user);
+
+            }
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection failed");
+        }
+    }
+
+    public Iterable<User> filterByRequest() {
+        ArrayList<User> users = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("select u.* from users u where not exists" +
+                     "(select 1 from friendship f where (f.id_friend1 = u.id or f.id_friend2 = u.id)) and not exists" +
+                     "(select 1 from friendshiprequest fr join users u2 on u2.id = fr.id_user1 where fr.id_user2 = u.id) " +
+                     "and u.id != ?");
+        ) {
+            statement.setString(1, user.getId());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                String id = resultSet.getString("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String pass2 = resultSet.getString("password");
+                String salt = resultSet.getString("salt");
+                User user = new User(firstName, lastName, email);
+                user.setPassword(pass2);
+                user.setSalt(salt);
+                user.setPassword(pass2);
+                user.setId(id);
+
+                users.add(user);
 
             }
 

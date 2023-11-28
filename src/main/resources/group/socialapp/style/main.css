@@ -1,5 +1,5 @@
 .root {
-    -fx-padding: 10;
+    -fx-background-color: linear-gradient(to bottom, #2c3e50, #3498db);
 }
 
 #tableView {
@@ -18,10 +18,6 @@
 }
 
 .button:hover {
-    -fx-background-color: #219653; /* Change background color on hover */
+    -fx-background-color: rgba(33, 150, 83, 0.86); /* Change background color on hover */
     -fx-effect: dropshadow(three-pass-box, #2ecc71, 10, 0, 0, 0);
-}
-
-#hbox {
-    -fx-background-color: linear-gradient(to bottom, #2c3e50, #3498db);
 }

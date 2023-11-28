@@ -19,13 +19,18 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
     }
 
     @Override
-    public Iterable<E> filterByEmail(ID searchText) {
+    public Iterable<User> filterByEmail(String searchText) {
         return null;
     }
 
     @Override
-    public Optional<User> getByEmail(ID email) {
+    public Optional<User> getByEmail(String email) {
         return null;
+    }
+
+    @Override
+    public void setUser(User user) {
+
     }
 
     public InMemoryRepository() {

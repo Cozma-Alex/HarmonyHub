@@ -68,7 +68,9 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     int getNrOfEntities();
 
-    Iterable<E> filterByEmail(ID searchText);
+    Iterable<User> filterByEmail(String searchText);
 
-    Optional<User> getByEmail(ID email);
+    Optional<User> getByEmail(String email);
+
+    void setUser(User user);
 }

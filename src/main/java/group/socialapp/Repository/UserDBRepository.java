@@ -52,9 +52,12 @@ public class UserDBRepository implements Repository<String, User> {
         List<User> userList = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from users");
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement("select * from users u where id != ?");
+             ) {
 
+            statement.setString(1, user.getId());
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
                 String firstName = resultSet.getString("first_name");
@@ -121,6 +124,16 @@ public class UserDBRepository implements Repository<String, User> {
             throw new RuntimeException("Conection failed");
         }
 
+    }
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

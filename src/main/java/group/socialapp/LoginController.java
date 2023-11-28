@@ -49,6 +49,7 @@ public class LoginController {
                 MainPageController startController = userLoader.getController();
                 startController.setService(serviceUser, serviceFriendship, startStage, user);
                 startStage.setScene(scene);
+                startStage.setWidth(928);
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);

@@ -40,6 +40,7 @@ public class ServiceUser implements Observable<UserChangeEvent> {
     }
 
     public Iterable<User> getAll(){
+        repository.setUser(user);
         return repository.findAll();
     }
 
@@ -57,6 +58,16 @@ public class ServiceUser implements Observable<UserChangeEvent> {
         }
         notify(new UserChangeEvent(ChangeEventType.ADD, user));
         return user;
+    }
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public User updateAnUser(String id, String firstName, String lastName, String email, String password){

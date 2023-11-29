@@ -6,7 +6,7 @@ plugins {
     id 'org.beryx.jlink' version '2.25.0'
 }
 
-group 'group'
+group 'HarmonyHub'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -25,8 +25,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'group.socialapp'
-    mainClass = 'group.socialapp.HelloApplication'
+    mainModule = 'HarmonyHub'
+    mainClass = 'HarmonyHub.StartApplication'
 }
 
 javafx {
@@ -48,6 +48,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.6.0")
 
     implementation 'org.mindrot:jbcrypt:0.4'
+
 
 }
 

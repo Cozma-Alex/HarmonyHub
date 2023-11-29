@@ -1,0 +1,54 @@
+.root{
+    -fx-background-size: cover;
+    -fx-background-position: bottom;
+    -fx-background-repeat: repeat-x;
+    -fx-background-image: url("../images/background.png");
+}
+
+.hyperlink-login {
+    -fx-text-fill: #06b2de;
+    -fx-font-size: 20px;
+}
+
+#registerAnchorPane{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, black, 10, 0, 0, 4);
+}
+
+.button {
+    -fx-background-color: #664ed0;
+    -fx-text-fill: white;
+    -fx-font-size: 18.0;
+    -fx-padding: 10 20 10 20;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #6007d5;
+}
+
+.text-field{
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #696969;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, #808080, 5, 0, 0, 4);
+}
+
+.label {
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+}
+
+
+.register-label {
+    -fx-font-size: 28.0;
+    -fx-text-fill: #2196F3; /* Text color */
+    -fx-font-weight: bold; /* Font weight */
+    -fx-padding: 10 0 10 0; /* Padding (top, right, bottom, left) */
+    -fx-alignment: center;
+}

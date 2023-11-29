@@ -1,4 +1,4 @@
-module group.socialapp {
+module HarmonyHub{
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -6,12 +6,12 @@ module group.socialapp {
     requires com.dlsc.formsfx;
     requires java.sql;
 
-    opens group.socialapp to javafx.fxml;
-    opens group.socialapp.GUI to javafx.fxml;
-    exports group.socialapp;
+    opens HarmonyHub to javafx.fxml;
+    opens HarmonyHub.GUI.Controllers to javafx.fxml;
+    exports HarmonyHub;
 
-    opens group.socialapp.Domain to javafx.base;
-    exports group.socialapp.GUI;
-    exports group.socialapp.GUI.Events;
-    opens group.socialapp.GUI.Events to javafx.fxml;
+    opens HarmonyHub.Domain to javafx.base;
+    exports HarmonyHub.GUI;
+    exports HarmonyHub.GUI.Events;
+    opens HarmonyHub.GUI.Events to javafx.fxml;
 }

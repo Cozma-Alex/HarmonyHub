@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="HarmonyHub/landing-page.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HarmonyHub.GUI.Controllers.LandingPageController">
+
+    <AnchorPane fx:id="logoAnchorPane" layoutX="188.0" layoutY="411.0" prefHeight="258.0" prefWidth="671.0">
+        <ImageView fitHeight="250.0" fitWidth="801.0">
+            <Image url="HarmonyHub/logo.png"/>
+        </ImageView>
+    </AnchorPane>
+
+    <AnchorPane fx:id="progressBarAnchorPane" layoutY="340.0" prefHeight="400" prefWidth="1920.0">
+        <ProgressBar fx:id="progressBar" styleClass="progressBar" progress="0.5" layoutX="850.0" layoutY="180.0" prefHeight="63.0" prefWidth="241.0" />
+    </AnchorPane>
+
+<AnchorPane fx:id="loginAnchorPane" layoutX="1194.0" layoutY="149.0" prefHeight="782.0" prefWidth="547.0" >
+    <Button fx:id="loginButton" layoutX="206.0" layoutY="518.0" prefHeight="39.0" prefWidth="136.0" text="Login">
+         <font>
+            <Font size="25.0" />
+         </font></Button>
+    <Label layoutX="127.0" layoutY="71.0" prefHeight="63.0" prefWidth="293.0" text="Welcome to HarmonyHub!" wrapText="true">
+         <font>
+            <Font size="23.0" />
+         </font></Label>
+    <Label layoutX="180.0" layoutY="143.0" text="Login to continue:">
+         <font>
+            <Font size="22.0" />
+         </font></Label>
+
+    <TextField fx:id="loginEmailField" layoutX="115.0" layoutY="291.0" prefHeight="40.0" prefWidth="318.0" promptText="Email">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+    <PasswordField fx:id="loginpasswordField" layoutX="115.0" layoutY="391.0" prefHeight="40.0" prefWidth="318.0" promptText="Password">
+         <font>
+            <Font size="16.0" />
+         </font></PasswordField>
+
+
+    <Hyperlink layoutX="12.0" layoutY="714.0" onAction="#openRegisterWindow" styleClass="hyperlink-register" text="You do not have an account? Register here." />
+</AnchorPane>
+
+</AnchorPane>

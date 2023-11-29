@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="HarmonyHub/GUI/Controllers/style/register-page.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HarmonyHub.GUI.Controllers.RegisterPageController">
+
+<!--    <AnchorPane fx:id="logoAnchorPane" layoutX="188.0" layoutY="411.0" prefHeight="258.0" prefWidth="671.0">-->
+<!--        <ImageView fitHeight="250.0" fitWidth="801.0">-->
+<!--            <Image url="HarmonyHub/GUI/Controllers/images/logo.png"/>-->
+<!--        </ImageView>-->
+<!--    </AnchorPane>-->
+
+    <AnchorPane fx:id="registerAnchorPane" layoutX="1056.0" layoutY="63.0" prefHeight="954.0" prefWidth="736.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="1056.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="63.0">
+        <opaqueInsets>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </opaqueInsets>
+
+        <Label layoutX="261.0" layoutY="69.0" styleClass="register-label" text="Register to HarmonyHub" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <font>
+                <Font size="22.0" />
+            </font></Label>
+
+        <Label layoutX="51.0" layoutY="153.0" prefHeight="60.0" prefWidth="158.0" styleClass="label" text="First Name">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="51.0" layoutY="251.0" prefHeight="60.0" prefWidth="187.0" styleClass="label" text="Last Name">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="51.0" layoutY="352.0" prefHeight="60.0" prefWidth="187.0" styleClass="label" text="Email">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="51.0" layoutY="452.0" prefHeight="60.0" prefWidth="187.0" styleClass="label" text="Password">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="51.0" layoutY="551.0" prefHeight="60.0" prefWidth="187.0" styleClass="label" text="Confirm Password">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+
+        <TextField fx:id="textFieldFirstName" layoutX="259.0" layoutY="153.0" prefHeight="60.0" prefWidth="382.0" promptText="Enter your first name" styleClass="text-field">
+         <font>
+            <Font size="19.0" />
+         </font></TextField>
+        <TextField fx:id="textFieldLastName" layoutX="259.0" layoutY="251.0" prefHeight="60.0" prefWidth="382.0" promptText="Enter your last name" styleClass="text-field">
+         <font>
+            <Font size="19.0" />
+         </font></TextField>
+        <TextField fx:id="textFieldEmail" layoutX="259.0" layoutY="352.0" prefHeight="60.0" prefWidth="382.0" promptText="Enter your email" styleClass="text-field">
+         <font>
+            <Font size="19.0" />
+         </font></TextField>
+        <PasswordField fx:id="textFieldPassword" layoutX="259.0" layoutY="452.0" prefHeight="60.0" prefWidth="382.0" promptText="Enter your password" styleClass="text-field">
+         <font>
+            <Font size="19.0" />
+         </font></PasswordField>
+        <PasswordField fx:id="textFieldConfirmPassword" layoutX="259.0" layoutY="551.0" prefHeight="60.0" prefWidth="382.0" promptText="Confirm your password" styleClass="text-field">
+         <font>
+            <Font size="19.0" />
+         </font></PasswordField>
+   
+       <Hyperlink layoutX="390.0" layoutY="838.0" onAction="#openLoginWindow" prefHeight="24.0" prefWidth="446.0" styleClass="hyperlink-login" text="Already have an account? Login here." />
+       <Button layoutX="63.0" layoutY="716.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="46.0" prefWidth="134.0" styleClass="button" text="Register">
+           <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+           </padding>
+       </Button>
+       <Button layoutX="312.0" layoutY="716.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="46.0" prefWidth="118.0" styleClass="button" text="Cancel">
+           <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+           </padding>
+       </Button>
+    </AnchorPane>
+
+
+</AnchorPane>

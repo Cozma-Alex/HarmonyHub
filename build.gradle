@@ -44,12 +44,13 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation("org.postgresql:postgresql:42.6.0")
 
     implementation 'org.mindrot:jbcrypt:0.4'
 
-
+    implementation 'com.jfoenix:jfoenix:9.0.10'
 }
 
 test {

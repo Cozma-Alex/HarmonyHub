@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: chat; Type: TABLE; Schema: public; Owner: postgres
+-- Name: chats; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.chats (
@@ -34,7 +34,7 @@ CREATE TABLE public.chats (
 ALTER TABLE public.chats OWNER TO postgres;
 
 --
--- Name: chattheme; Type: TABLE; Schema: public; Owner: postgres
+-- Name: chatthemes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.chatthemes (
@@ -49,20 +49,7 @@ CREATE TABLE public.chatthemes (
 ALTER TABLE public.chatthemes OWNER TO postgres;
 
 --
--- Name: friendship; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.friendships (
-    date_friendship date NOT NULL,
-    friend_1 uuid NOT NULL,
-    friend_2 uuid NOT NULL
-);
-
-
-ALTER TABLE public.friendships OWNER TO postgres;
-
---
--- Name: friendshiprequest; Type: TABLE; Schema: public; Owner: postgres
+-- Name: friendshiprequests; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.friendshiprequests (
@@ -77,7 +64,32 @@ CREATE TABLE public.friendshiprequests (
 ALTER TABLE public.friendshiprequests OWNER TO postgres;
 
 --
--- Name: message; Type: TABLE; Schema: public; Owner: postgres
+-- Name: friendships; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.friendships (
+    date_friendship date NOT NULL,
+    friend_1 uuid NOT NULL,
+    friend_2 uuid NOT NULL
+);
+
+
+ALTER TABLE public.friendships OWNER TO postgres;
+
+--
+-- Name: messagereceiver; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.messagereceiver (
+    id_message uuid NOT NULL,
+    id_receiver uuid NOT NULL
+);
+
+
+ALTER TABLE public.messagereceiver OWNER TO postgres;
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.messages (
@@ -91,18 +103,6 @@ CREATE TABLE public.messages (
 
 
 ALTER TABLE public.messages OWNER TO postgres;
-
---
--- Name: messagereceiver; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.messagereceivers (
-    id_message uuid NOT NULL,
-    id_receiver uuid NOT NULL
-);
-
-
-ALTER TABLE public.messagereceivers OWNER TO postgres;
 
 --
 -- Name: userchats; Type: TABLE; Schema: public; Owner: postgres
@@ -135,7 +135,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: chats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.chats (id_chat, chat_name, id_theme) FROM stdin;
@@ -143,7 +143,7 @@ COPY public.chats (id_chat, chat_name, id_theme) FROM stdin;
 
 
 --
--- Data for Name: chattheme; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: chatthemes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.chatthemes (id_theme, theme_name, background_model, user_color, other_color) FROM stdin;
@@ -151,15 +151,7 @@ COPY public.chatthemes (id_theme, theme_name, background_model, user_color, othe
 
 
 --
--- Data for Name: friendship; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.friendships (date_friendship, friend_1, friend_2) FROM stdin;
-\.
-
-
---
--- Data for Name: friendshiprequest; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: friendshiprequests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.friendshiprequests (id_request, user_sender, user_receiver, date_request, status) FROM stdin;
@@ -167,10 +159,10 @@ COPY public.friendshiprequests (id_request, user_sender, user_receiver, date_req
 
 
 --
--- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: friendships; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.messages (id_message, id_chat, id_from, message, messagedate, id_reply) FROM stdin;
+COPY public.friendships (date_friendship, friend_1, friend_2) FROM stdin;
 \.
 
 
@@ -179,6 +171,14 @@ COPY public.messages (id_message, id_chat, id_from, message, messagedate, id_rep
 --
 
 COPY public.messagereceiver (id_message, id_receiver) FROM stdin;
+\.
+
+
+--
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.messages (id_message, id_chat, id_from, message, messagedate, id_reply) FROM stdin;
 \.
 
 
@@ -199,7 +199,7 @@ COPY public.users (id_user, first_name, last_name, username, email, password_has
 
 
 --
--- Name: chat chat_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chats chat_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.chats
@@ -207,7 +207,7 @@ ALTER TABLE ONLY public.chats
 
 
 --
--- Name: chattheme chattheme_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chatthemes chattheme_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.chatthemes
@@ -215,7 +215,7 @@ ALTER TABLE ONLY public.chatthemes
 
 
 --
--- Name: chattheme chattheme_pk_2; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chatthemes chattheme_pk_2; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.chatthemes
@@ -223,7 +223,7 @@ ALTER TABLE ONLY public.chatthemes
 
 
 --
--- Name: friendship friendship_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: friendships friendship_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friendships
@@ -231,7 +231,7 @@ ALTER TABLE ONLY public.friendships
 
 
 --
--- Name: friendshiprequest friendshiprequest_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: friendshiprequests friendshiprequest_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friendshiprequests
@@ -239,7 +239,7 @@ ALTER TABLE ONLY public.friendshiprequests
 
 
 --
--- Name: message message_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: messages message_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.messages
@@ -287,15 +287,15 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: chat chat_chattheme_id_theme_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chats chat_chattheme_id_theme_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.chats
-    ADD CONSTRAINT chat_chattheme_id_theme_fk FOREIGN KEY (id_theme) REFERENCES public.chatthemes (id_theme) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT chat_chattheme_id_theme_fk FOREIGN KEY (id_theme) REFERENCES public.chatthemes(id_theme) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: friendship friendship_f1__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: friendships friendship_f1__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friendships
@@ -303,7 +303,7 @@ ALTER TABLE ONLY public.friendships
 
 
 --
--- Name: friendship friendship_f2__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: friendships friendship_f2__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friendships
@@ -311,7 +311,7 @@ ALTER TABLE ONLY public.friendships
 
 
 --
--- Name: friendshiprequest friendshiprequest_ur__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: friendshiprequests friendshiprequest_ur__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friendshiprequests
@@ -319,7 +319,7 @@ ALTER TABLE ONLY public.friendshiprequests
 
 
 --
--- Name: friendshiprequest friendshiprequest_us__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: friendshiprequests friendshiprequest_us__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friendshiprequests
@@ -327,15 +327,15 @@ ALTER TABLE ONLY public.friendshiprequests
 
 
 --
--- Name: message message_chat__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: messages message_chat__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT message_chat__fk FOREIGN KEY (id_chat) REFERENCES public.chats (id_chat) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT message_chat__fk FOREIGN KEY (id_chat) REFERENCES public.chats(id_chat) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: message message_from__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: messages message_from__fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.messages
@@ -343,11 +343,11 @@ ALTER TABLE ONLY public.messages
 
 
 --
--- Name: message message_message_id_message_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: messages message_message_id_message_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT message_message_id_message_fk FOREIGN KEY (id_reply) REFERENCES public.messages (id_message) ON UPDATE CASCADE ON DELETE SET DEFAULT;
+    ADD CONSTRAINT message_message_id_message_fk FOREIGN KEY (id_reply) REFERENCES public.messages(id_message) ON UPDATE CASCADE ON DELETE SET DEFAULT;
 
 
 --
@@ -355,7 +355,7 @@ ALTER TABLE ONLY public.messages
 --
 
 ALTER TABLE ONLY public.messagereceiver
-    ADD CONSTRAINT messagereceiver_message_id_message_fk FOREIGN KEY (id_message) REFERENCES public.messages (id_message) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT messagereceiver_message_id_message_fk FOREIGN KEY (id_message) REFERENCES public.messages(id_message) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -371,7 +371,7 @@ ALTER TABLE ONLY public.messagereceiver
 --
 
 ALTER TABLE ONLY public.userchats
-    ADD CONSTRAINT userchats_chat_id_chat_fk FOREIGN KEY (id_chat) REFERENCES public.chats (id_chat) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT userchats_chat_id_chat_fk FOREIGN KEY (id_chat) REFERENCES public.chats(id_chat) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

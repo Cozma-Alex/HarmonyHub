@@ -58,7 +58,7 @@ public class RepositoryDBFriendship implements Repository<Pair<UUID, UUID>, Frie
                 PreparedStatement statement = connection.prepareStatement("select * from friendships");
                 ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 UUID id_friend1 = (UUID) resultSet.getObject("friend_1");
                 UUID id_friend2 = (UUID) resultSet.getObject("friend_2");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_friendship").toLocalDateTime();
@@ -77,11 +77,11 @@ public class RepositoryDBFriendship implements Repository<Pair<UUID, UUID>, Frie
 
     @Override
     public Optional<Friendship> addOne(Friendship friendship) {
-        if (friendship == null){
+        if (friendship == null) {
             throw new IllegalArgumentException("Friendship must not be null");
         }
 
-        try(Connection connection = DriverManager.getConnection(url, username, password)){
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = connection.prepareStatement("insert into friendships values (?,?,?)");
             statement.setObject(1, friendship.getId().getLeft());
             statement.setObject(2, friendship.getId().getRight());
@@ -95,16 +95,13 @@ public class RepositoryDBFriendship implements Repository<Pair<UUID, UUID>, Frie
 
     @Override
     public Optional<Friendship> delete(Pair<UUID, UUID> id) {
-        if (id == null){
+        if (id == null) {
             throw new IllegalArgumentException("Id must not be null");
         }
 
         Optional<Friendship> friendship = findOne(id);
-
-        String insertSQL = "delete from friendships where friend_1 = ? and friend_2 = ?";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password)){
-            PreparedStatement statement = connection.prepareStatement(insertSQL);
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = connection.prepareStatement("delete from friendships where friend_1 = ? and friend_2 = ?");
             statement.setObject(1, id.getLeft());
             statement.setObject(2, id.getRight());
             statement.executeUpdate();
@@ -118,5 +115,41 @@ public class RepositoryDBFriendship implements Repository<Pair<UUID, UUID>, Frie
     @Override
     public Optional<Friendship> update(Friendship friendship) {
         return Optional.empty();
+    }
+
+    public List<Friendship> friendsFromMonth(UUID id, int month) {
+        List<Friendship> friendships = new ArrayList<>();
+
+        if (id == null) {
+            throw new IllegalArgumentException("Id must not be null");
+        }
+
+        if (0 > month || month > 12) {
+            throw new RuntimeException("Month must be between 1 and 12");
+        }
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+                PreparedStatement statement = connection.prepareStatement("select * from friendships where (friend_1 = ? or friend_2 = ?) and extract(month from date_friendship) = ?")
+        ) {
+            statement.setObject(1, id);
+            statement.setObject(2, id);
+            statement.setInt(3, month);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                UUID id_friend1 = (UUID) resultSet.getObject("friend_1");
+                UUID id_friend2 = (UUID) resultSet.getObject("friend_2");
+                LocalDateTime dateTime = resultSet.getTimestamp("date_friendship").toLocalDateTime();
+                Friendship friendship = new Friendship();
+                friendship.setDateFriendship(dateTime);
+                friendship.setId(new Pair<>(id_friend1, id_friend2));
+                friendships.add(friendship);
+            }
+
+            return friendships;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Retrieving data from the database failed");
+        }
+
     }
 }

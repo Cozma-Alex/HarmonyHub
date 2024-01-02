@@ -55,7 +55,7 @@ public class RepositoryDBUser implements Repository<UUID, User> {
         List<User> userList = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement statement = connection.prepareStatement("select * from users where id_user = ?")
+                PreparedStatement statement = connection.prepareStatement("select * from users")
         ) {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {

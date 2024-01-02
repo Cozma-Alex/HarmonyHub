@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-class RepositoryDBUser implements Repository<UUID, User> {
+public class RepositoryDBUser implements Repository<UUID, User> {
 
     private final String url;
     private final String username;
@@ -27,7 +27,7 @@ class RepositoryDBUser implements Repository<UUID, User> {
         }
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from users where id_user = ?")
+                PreparedStatement statement = connection.prepareStatement("select * from users where id_user = ?")
         ) {
             statement.setObject(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -55,7 +55,7 @@ class RepositoryDBUser implements Repository<UUID, User> {
         List<User> userList = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("select * from users where id_user = ?")
+                PreparedStatement statement = connection.prepareStatement("select * from users where id_user = ?")
         ) {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -114,7 +114,7 @@ class RepositoryDBUser implements Repository<UUID, User> {
         Optional<User> user = findOne(id);
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("delete from users where id_user = ?")
+                PreparedStatement statement = connection.prepareStatement("delete from users where id_user = ?")
         ) {
 
             statement.setObject(1, id);

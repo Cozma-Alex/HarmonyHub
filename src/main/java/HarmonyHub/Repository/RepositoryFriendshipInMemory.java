@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepositoryFriendshipInMemory extends UserInMemoryRepository<Pair<UUID, UUID>, Friendship> {
+public class RepositoryFriendshipInMemory extends RepositoryUserInMemory<Pair<UUID, UUID>, Friendship> {
 
-    UserInMemoryRepository<UUID, User> user_repo;
+    RepositoryUserInMemory<UUID, User> user_repo;
 
-    public RepositoryFriendshipInMemory(UserInMemoryRepository<UUID, User> user_repo) {
+    public RepositoryFriendshipInMemory(RepositoryUserInMemory<UUID, User> user_repo) {
         this.user_repo = user_repo;
     }
 

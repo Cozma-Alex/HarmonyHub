@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserInMemoryRepository<ID, E extends Entity<ID>> implements Repository<ID, E> {
+public class RepositoryUserInMemory<ID, E extends Entity<ID>> implements Repository<ID, E> {
 
 
     private final Map<ID,E> entities;
 
-    public UserInMemoryRepository() {
+    public RepositoryUserInMemory() {
         this.entities = new HashMap<>();
     }
 
